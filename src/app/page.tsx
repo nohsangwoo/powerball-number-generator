@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface PowerballSet {
   mainNumbers: number[];
@@ -38,46 +39,77 @@ export default function PowerballGenerator() {
   };
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Powerball Number Generator</h1>
-      <div style={{ marginBottom: '20px' }}>
-        <label>
-          Number of Sets:
+    <div className="min-h-screen bg-gray-900 text-white p-4 md:p-8 flex flex-col items-center">
+      <motion.h1
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-4xl md:text-6xl font-bold text-center mb-8 text-purple-400"
+      >
+        Powerball Number Generator
+      </motion.h1>
+      <div className="w-full max-w-md mb-8">
+        <label className="block mb-2">
+          Number of sets to generate:
           <input
             type="number"
             value={setCount}
             onChange={(e) => setSetCount(Number(e.target.value))}
             min="1"
-            style={{ marginLeft: '10px', width: '50px' }}
+            className="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50"
           />
         </label>
-        <button onClick={handleGenerate} style={{ marginLeft: '20px' }}>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleGenerate}
+          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+        >
           Generate
-        </button>
+        </motion.button>
       </div>
-      <div>
+      <AnimatePresence>
         {generatedSets.map((set, index) => (
-          <div
+          <motion.div
             key={index}
-            style={{
-              border: '1px solid #ccc',
-              borderRadius: '10px',
-              padding: '10px',
-              marginBottom: '10px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="bg-gray-800 rounded-lg p-4 mb-4 shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out w-full max-w-md"
           >
-            <div style={{ flex: 1 }}>
-              <strong>Main Numbers:</strong> {set.mainNumbers.join(', ')}
+            <div className="flex flex-wrap justify-between items-center">
+              <div className="w-full md:w-2/3 mb-2 md:mb-0">
+                <strong className="text-purple-400">Main numbers:</strong>
+                <div className="flex space-x-2 mt-2">
+                  {set.mainNumbers.map((num, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: idx * 0.1, type: 'spring', stiffness: 500 }}
+                      className="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold"
+                    >
+                      {num}
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+              <div className="w-full md:w-1/3 text-right">
+                <strong className="text-purple-400">Powerball:</strong>
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.5, type: 'spring', stiffness: 500 }}
+                  className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center text-gray-900 font-bold text-lg mt-2 ml-auto"
+                >
+                  {set.powerball}
+                </motion.div>
+              </div>
             </div>
-            <div style={{ flex: 0.3, textAlign: 'right' }}>
-              <strong>Powerball:</strong> {set.powerball}
-            </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </AnimatePresence>
     </div>
   );
 }
