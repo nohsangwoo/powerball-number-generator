@@ -28,7 +28,7 @@ export const metadata: Metadata = {
         url: "https://powerball.ludgi.ai/logo.webp", // 실제 로고 URL로 변경해주세요
         width: 1200,
         height: 630,
-        alt: "행운의 로또 번호 생성기",
+        alt: "powerball number generator",
       },
     ],
     locale: "ko_KR",
