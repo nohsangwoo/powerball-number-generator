@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface PowerballSet {
@@ -29,13 +29,83 @@ function generatePowerballNumbers(setCount: number): PowerballSet[] {
   return sets;
 }
 
+const loadingMessages = [
+  "Harnessing cosmic energy...",
+  "Praying with the lucky pig...",
+  "Pleading with the lottery goddess...",
+  "Searching for lucky constellations...",
+  "Hunting for four-leaf clovers...",
+  "Rubbing the golden rabbit's foot...",
+  "Spinning the wheel of fortune...",
+  "Summoning the lottery fairy...",
+  "Aligning the lucky stars...",
+  "Consulting the mystic 8-ball...",
+  "Decoding winning number patterns...",
+  "Channeling Lady Luck...",
+  "Brewing a luck potion...",
+  "Casting a fortune spell...",
+  "Negotiating with leprechauns...",
+  "Polishing lucky pennies...",
+  "Waking up sleeping unicorns...",
+  "Catching shooting stars...",
+  "Crossing fingers and toes...",
+  "Wishing upon a dandelion...",
+  "Shaking the cosmic dice...",
+  "Unlocking the vault of fortune...",
+  "Decrypting the universe's secrets...",
+  "Charging the crystal ball...",
+  "Tuning into lucky frequencies...",
+  "Balancing karma scales...",
+  "Whispering to lady fortune...",
+  "Dusting off the lucky horseshoe...",
+  "Aligning chakras for good luck...",
+  "Consulting ancient oracles...",
+  "Stirring the cauldron of chance...",
+  "Polishing the magic lamp...",
+  "Untangling fate's threads...",
+  "Decoding fortune cookies...",
+  "Syncing with lucky planets...",
+  "Harvesting lucky bamboo...",
+  "Awakening dormant luck...",
+  "Calibrating the luck-o-meter...",
+  "Summoning good vibes...",
+  "Channeling winning energy...",
+  "Activating lucky charms...",
+  "Consulting the book of fate...",
+  "Harmonizing with lucky numbers...",
+  "Brewing lucky tea leaves...",
+  "Polishing the crystal ball...",
+  "Tuning the cosmic radio...",
+  "Aligning lucky feng shui...",
+  "Decoding celestial messages...",
+  "Charging lucky talismans...",
+  "Summoning serendipity..."
+];
+
 export default function PowerballGenerator() {
   const [setCount, setSetCount] = useState<number>(1);
   const [generatedSets, setGeneratedSets] = useState<PowerballSet[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('');
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isLoading) {
+      interval = setInterval(() => {
+        setLoadingMessage(loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
+      }, 1100);
+    }
+    return () => clearInterval(interval);
+  }, [isLoading]);
 
   const handleGenerate = () => {
-    const sets = generatePowerballNumbers(setCount);
-    setGeneratedSets(sets);
+    setIsLoading(true);
+    const loadingTime = Math.random() * 2000 + 1000; // 1-3 seconds
+    setTimeout(() => {
+      const sets = generatePowerballNumbers(setCount);
+      setGeneratedSets(sets);
+      setIsLoading(false);
+    }, loadingTime);
   };
 
   return (
@@ -63,13 +133,31 @@ export default function PowerballGenerator() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleGenerate}
-          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+          disabled={isLoading}
+          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg disabled:opacity-50"
         >
           Generate
         </motion.button>
       </div>
+
+      {isLoading && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="text-center mb-8"
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="w-16 h-16 border-t-4 border-purple-500 border-solid rounded-full mx-auto mb-4"
+          />
+          <p className="text-lg text-purple-400">{loadingMessage}</p>
+        </motion.div>
+      )}
+
       <AnimatePresence>
-        {generatedSets.map((set, index) => (
+        {!isLoading && generatedSets.map((set, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 50 }}
