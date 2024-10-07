@@ -1,5 +1,9 @@
 # powerball number generator
 
+# sitemap
+
+- ref: https://powerball.ludgi.ai/sitemap.xml
+
 # deploy
 
 https://powerball.ludgi.ai
