@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import DisplayLudgi from './components/DisplayLudgi';
 
 interface PowerballSet {
   mainNumbers: number[];
@@ -88,11 +89,14 @@ export default function PowerballGenerator() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
 
+  const getRandomMessage = () => loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
+
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isLoading) {
+      setLoadingMessage(getRandomMessage()); // 즉시 첫 메시지 설정
       interval = setInterval(() => {
-        setLoadingMessage(loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
+        setLoadingMessage(getRandomMessage());
       }, 1100);
     }
     return () => clearInterval(interval);
@@ -100,6 +104,7 @@ export default function PowerballGenerator() {
 
   const handleGenerate = () => {
     setIsLoading(true);
+    setLoadingMessage(getRandomMessage()); // 즉시 첫 메시지 설정
     const loadingTime = Math.random() * 2000 + 1000; // 1-3 seconds
     setTimeout(() => {
       const sets = generatePowerballNumbers(setCount);
@@ -198,6 +203,7 @@ export default function PowerballGenerator() {
           </motion.div>
         ))}
       </AnimatePresence>
+      <DisplayLudgi />
     </div>
   );
 }

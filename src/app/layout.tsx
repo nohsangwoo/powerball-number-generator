@@ -23,7 +23,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Powerball Number Generator - Boost Your Chances of Winning",
     description: "Use our free Powerball number generator to create potential winning combinations. Improve your lottery strategy with our advanced random number picker.",
-    // ... 나머지 openGraph 설정 ...
+    images: [
+      {
+        url: "https://powerball.ludgi.ai/logo.webp", // 실제 로고 URL로 변경해주세요
+        width: 1200,
+        height: 630,
+        alt: "행운의 로또 번호 생성기",
+      },
+    ],
+    locale: "ko_KR",
   },
   twitter: {
     title: "Powerball Number Generator - Your Path to the Jackpot",
