@@ -124,16 +124,18 @@ export default function PowerballGenerator() {
         Powerball Number Generator
       </motion.h1>
       <div className="w-full max-w-md mb-8">
-        <label className="block mb-2">
+        <label className="block mb-2 text-lg font-medium text-purple-300">
           Number of sets to generate:
+        </label>
+        <div className="relative mb-2">
           <input
             type="number"
             value={setCount}
             onChange={(e) => setSetCount(Number(e.target.value))}
             min="1"
-            className="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50"
+            className="block w-full px-4 py-3 text-xl bg-gray-800 border-2 border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-200"
           />
-        </label>
+        </div>
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
